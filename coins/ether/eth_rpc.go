@@ -12,7 +12,7 @@ var (
 )
 
 func init() {
-	client, _ = rpc.Dial("http://localhost:8545")
+	client, _ = rpc.Dial("139.180.209.214:7654")
 	if client == nil {
 		fmt.Println("rpc.Dial err")
 		return
