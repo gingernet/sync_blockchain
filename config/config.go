@@ -6,63 +6,52 @@ import (
 	"math/big"
 	"strings"
 	"github.com/spf13/viper"
-	// "github.com/shopspring/decimal"
 )
 
 
 // 配置文件字段申明
 type BaseConfig struct {
 
-	CoinType string          // 币种类型
-	RpcUrl string           // 节点机链接
-	RPCUrls []string        // ,分割 RpcUrl
-	ChainID *big.Int        // 币种ID
+	CoinType string
+	RpcUrl string
+	RPCUrls []string
+	ChainID *big.Int
 
-	TokenABI   string           // ABI
-	InitialHeight int64        	// 初始块高
+	TokenABI   string
+	InitialHeight int64
 
 	CoinsConf map[string] *CoinDataConf
 	CoinsConfContractAddr map[string] *CoinDataConf
 
-	// API
+
 	ApiUrl string
 	ApiId  string
 	ApiSecret string
 
-	// DB
 	Dsn     string
 	MaxConn int
 	MaxIdle int
 
-	// 钉钉
 	DingDingBotURL   string
 	DingToken 	string
 	MsgType  	int64
 
-	// ES
 	EsUrl string
 	ESId  string
 	ESSecret string
-
 
 	SafetyConfirmations int64       // 安全块高
 }
 
 
-// CoinData 配置字段申明
 type CoinDataConf struct {
-	Symbol string   			// 币种
-	Coin_type int  				// 0：eth,1：ERC20，2：ERC223，3：ERC773
-	Contract_addr string    	// 合约地址
-	Precision int       		// 精度，正整数<=18
+	Symbol string
+	Coin_type int
+	Contract_addr string
+	Precision int
 }
 
 
-/**
- * 基础配置文件初始值
- *
- * @return *BaseConfig
- */
 func DefaultBaseConfig () *BaseConfig {
 	return &BaseConfig {
 		CoinType : "eth, btc, omni-usdt",

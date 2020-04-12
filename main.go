@@ -17,10 +17,10 @@ func initConfig()  {
 
 	// DB  init
 	//db.Init(cfg.Dsn, cfg.MaxConn, cfg.MaxIdle)
-	cfg.LoadCoinDataConf(auth)
+	//cfg.LoadCoinDataConf(auth)
 
 	// 打印配置数据
-	fmt.Println("%+v", cfg)
+	// fmt.Println("%+v", cfg)
 }
 
 func main()  {
