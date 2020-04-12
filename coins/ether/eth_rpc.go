@@ -20,7 +20,7 @@ func init() {
 }
 
 //获取账户列表
-func getAccounts(client *rpc.Client) (accounts []string, err error) {
+func GetAccounts(client *rpc.Client) (accounts []string, err error) {
 	err = client.Call(&accounts, "eth_accounts")
 	if err == nil {
 		return accounts, nil
@@ -31,7 +31,7 @@ func getAccounts(client *rpc.Client) (accounts []string, err error) {
 }
 
 //获取挖矿账户
-func getCoinbase(client *rpc.Client) (coinbase string, err error) {
+func GetCoinbase(client *rpc.Client) (coinbase string, err error) {
 	err = client.Call(&coinbase, "eth_coinbase")
 	if err == nil {
 		return coinbase, nil
@@ -41,7 +41,7 @@ func getCoinbase(client *rpc.Client) (coinbase string, err error) {
 }
 
 //获取余额
-func getBalance(client *rpc.Client, account string) (Balance int64, err error) {
+func GetBalance(client *rpc.Client, account string) (Balance int64, err error) {
 
 	var balance string
 	err = client.Call(&balance, "eth_getBalance", account, "latest")
@@ -53,13 +53,11 @@ func getBalance(client *rpc.Client, account string) (Balance int64, err error) {
 }
 
 
-func creatNewAccount(client *rpc.Client, password string) (newAccount string, err error) {
+func CreatNewAccount(client *rpc.Client, password string) (newAccount string, err error) {
 	err = client.Call(&newAccount, "personal_newAccount", password)
 	if err != nil {
 		return "", err
 	}
 	return newAccount, nil
-
 }
-
 
