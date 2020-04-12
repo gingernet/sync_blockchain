@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"os"
 	"sync_blockchain/config"
+	"sync_blockchain/db"
 )
 
 
 func initConfig()  {
-	cfg = config.New(cfgFile, ".")
+	cfg = config.New(cfgFile, "./resource/app.yaml")
 	if cfg == nil {
 		fmt.Errorf("Initialization configuration file exception, cfg = %+v", cfg)
 		os.Exit(-1)
@@ -23,5 +24,5 @@ func initConfig()  {
 }
 
 func main()  {
-
+	initConfig()
 }
