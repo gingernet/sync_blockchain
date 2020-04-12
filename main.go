@@ -16,7 +16,7 @@ func initConfig()  {
 	}
 
 	// DB  init
-	db.Init(cfg.Dsn, cfg.MaxConn, cfg.MaxIdle)
+	//db.Init(cfg.Dsn, cfg.MaxConn, cfg.MaxIdle)
 	cfg.LoadCoinDataConf(auth)
 
 	// 打印配置数据

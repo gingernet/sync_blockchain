@@ -1,8 +1,5 @@
 package table
 
-import (
-	"github.com/shopspring/decimal"
-)
 
 type CoinConfig struct {
 	Id           int64
