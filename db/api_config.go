@@ -4,20 +4,18 @@ import (
 	"database/sql"
 	"fmt"
 	"sync_blockchain/db/table"
-	"time"
-	"strings"
 )
 
 type ApiAccountModel struct{
 	model
 }
 
-func NewAddressModel(stmt *sql.Tx) *AddressesModel{
-	m := &AddressesModel{
+func NewApiConfigModel(stmt *sql.Tx) *ApiConfigModel{
+	m := &ApiConfigModel{
 		model{
 			//TODO::顺序必须与 rows.Scan 和 this.Insert 的参数一致
-			fields:"`id`,`address`,`nonce`,`type`,`hash`,`ctime`,`mtime`",
-			table:"`addresses`",
+			fields:"`id`,`name`,`role`,`token`, `ctime`,`mtime`",
+			table:"`api_config`",
 			scan: func(rows *sql.Rows) (interface{}, error) {
 				var (
 					list []*table.ApiAccount
@@ -26,8 +24,8 @@ func NewAddressModel(stmt *sql.Tx) *AddressesModel{
 				)
 
 				for rows.Next() {
-					var row table.Addresses
-					scanErr = rows.Scan(&row.Id, &row.Address, &row.Nonce, &row.Type, &row.Hash, &row.Ctime, &row.Mtime)
+					var row table.ApiAccount
+					scanErr = rows.Scan(&row.Id, &row.Name, &row.Role, &row.Token, &row.Ctime, &row.Mtime)
 					if scanErr != nil {
 						return nil, scanErr
 					}
@@ -45,84 +43,49 @@ func NewAddressModel(stmt *sql.Tx) *AddressesModel{
 	return m
 }
 
-func (this *AddressesModel) Insert(addr *table.Addresses) int64{
-	return this.model.Insert(nil, addr.Address, addr.Nonce, addr.Type, addr.Hash, addr.Ctime, addr.Mtime)
+func (this *ApiAccountModel) Insert(addr *table.ApiAccount) int64{
+	return this.model.Insert(nil, addr.Name, addr.Role, addr.Token, addr.Ctime, addr.Mtime)
 }
 
-func (this *AddressesModel)Select(where string, order string, limit string)(bool, []*table.Addresses){
+func (this *ApiAccountModel)Select(where string, order string, limit string)(bool, []*table.ApiAccount){
 	ok, addrs := this.model.Select(where, order, limit)
 	if addrs == nil{
 		return ok, nil
 	}
-	return ok, addrs.([]*table.Addresses)
+	return ok, addrs.([]*table.ApiAccount)
 }
 
-func (this *AddressesModel) FindByAddr(addr string) (bool, *table.Addresses){
-	ok, row := this.Select(" `address`='" + addr + "' ", "", "1")
+func (this *ApiAccountModel) FindByName(name string) (bool, *table.ApiAccount){
+	ok, row := this.Select(" `name`='" + name + "' ", "", "1")
 	if row == nil{
 		return ok, nil
 	}
 	return ok, row[0]
 }
 
-func (this *AddressesModel) FindByType(addrType int) (bool, *table.Addresses){
-	ok, row := this.Select(fmt.Sprintf(" `type`='%d'", addrType), "", "1")
+func (this *ApiAccountModel) FindByToken(token string) (bool, *table.ApiAccount){
+	ok, row := this.Select(" `token`='" + token + "' ", "", "1")
 	if row == nil{
 		return ok, nil
 	}
 	return ok, row[0]
 }
 
-func (this *AddressesModel) SelectByAddrs(addrs []string) (bool, []*table.Addresses){
-	ok, rows := this.Select(" `address` in ('" +  strings.Join(addrs, "','") + "') ", "", "1")
-	return ok, rows
-}
 
-func (this *AddressesModel) SelectAll()(bool, []*table.Addresses){
+func (this *ApiAccountModel) SelectAll()(bool, []*table.ApiAccount){
 	return this.Select("", "", "")
 }
 
-func (this *AddressesModel) Page(pageIndex int, pageSize int)(bool, []*table.Addresses){
-	offset := (pageIndex - 1) * pageSize
-	return this.Select("", "", fmt.Sprintf("%d,%d", offset, pageSize))
-}
 
-func (this *AddressesModel) TotalCount()(bool, int64){
-	return this.model.Count("")
-}
-
-func (this *AddressesModel) IncrNonce(id int64)int64{
-	sqlStr := fmt.Sprintf("update %s set `nonce`=`nonce`+1, `mtime`=? where `id`='%d' limit 1", this.table, id)
-	return this.model.Save(sqlStr, time.Now().Format("2006-01-02 15:04:05"))
-}
-
-func (this *AddressesModel) FindById(id int64) (bool, *table.Addresses){
-	ok, addrs := this.Select(fmt.Sprintf("`id`='%d'", id), "", "1")
-	if addrs == nil{
+func (this *ApiAccountModel) FindById(id int64) (bool, *table.ApiAccount){
+	ok, api_configs := this.Select(fmt.Sprintf("`id`='%d'", id), "", "1")
+	if api_configs == nil{
 		return ok, nil
 	}
-	return ok, addrs[0]
+	return ok, api_configs[0]
 }
 
-func (this *AddressesModel) Exists(addr string) (bool, bool){
-	ok, count := this.Count(" `address`='" + addr + "' ")
+func (this *ApiAccountModel) Exists(name string) (bool, bool){
+	ok, count := this.Count(" `name`='" + name + "' ")
 	return ok, count > 0
-}
-
-func (this *AddressesModel) FindByAddress(addr string) (bool, *table.Addresses){
-	ok, addrs := this.Select(fmt.Sprintf("`address`='%s'", addr), "", "1")
-	if addrs == nil{
-		return ok, nil
-	}
-	return ok, addrs[0]
-}
-
-func (this *AddressesModel) IncrNonceByAddress(addr string)int64{
-	sqlStr := fmt.Sprintf("update %s set `nonce`=`nonce`+1, `mtime`=? where `address`=? limit 1", this.table)
-	return this.model.Save(sqlStr, time.Now().Format("2006-01-02 15:04:05"), addr)
-}
-
-func (this *AddressesModel) DecrNonceByAddress(addr string)int64{
-	sqlStr := fmt.Sprintf("update %s set `nonce`=`nonce`-1, `mtime`=? where `address`=? limit 1", this.table)
-	return this.model.Save(sqlStr, time.Now().Format("2006-01-02 15:04:05"), addr)
 }

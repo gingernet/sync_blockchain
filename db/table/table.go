@@ -16,9 +16,9 @@ type CoinConfig struct {
 
 type ApiAccount struct {
 	Id             int64
-	name           string
-	role           string
-	token          string
+	Name           string
+	Role           string
+	Token          string
 	Ctime          string
 	Mtime          string
 }
