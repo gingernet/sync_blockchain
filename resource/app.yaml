@@ -9,7 +9,7 @@ api:
   secret: 123456         # 密码
 
 db:
-  dsn: exchange_w:de38lzj59qp@tcp(172.17.36.96:3401)/eth_wallet_db?timeout=10s&&loc=Local&parseTime=true&allowOldPasswords=1
+  dsn: exchange_w:de38lzj59qp@tcp(127.0.0.1:3401)/eth_wallet_db?timeout=10s&&loc=Local&parseTime=true&allowOldPasswords=1
   maxConn: 100         # 最大链接数
   maxIdle: 100         # 最多可空闲链接数
 
