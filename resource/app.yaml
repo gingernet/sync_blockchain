@@ -1,0 +1,31 @@
+# 配置文件
+
+node:
+  rpcUrl: http://127.0.0.1:8645
+
+api:
+  url: http://127.0.0.1:8152/finance/     # API 链接
+  id: gingernet          # appid
+  secret: 123456         # 密码
+
+db:
+  dsn: exchange_w:de38lzj59qp@tcp(172.17.36.96:3401)/eth_wallet_db?timeout=10s&&loc=Local&parseTime=true&allowOldPasswords=1
+  maxConn: 100         # 最大链接数
+  maxIdle: 100         # 最多可空闲链接数
+
+wallet:
+  coinType: eth         # 钱包类型
+  height: 2812060       # 初始块高
+
+
+#  钉钉bot消息
+dingding:
+  url: http://127.0.0.1:8090/smsSend
+  proxy: montnets
+  type: 13
+  phone: 18612221108
+  company_id: 1
+
+
+elastic:
+  es_url: http://127.0.0.1:8090/smsSend
