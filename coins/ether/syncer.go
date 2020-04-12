@@ -18,3 +18,4 @@ type ChainSyncer struct {
 	LastBlockTime *big.Int          		// 前一个块的时间
 	RpcClients map[int]*ethclient.Client    // rpc map
 }
+
